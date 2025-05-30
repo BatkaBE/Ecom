@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/product_view_shop.dart';
+import 'package:shop/widgets/product_card_shop.dart';
+
 import '../provider/globalprovider.dart';
 
 class ShopPage extends StatefulWidget {
@@ -54,12 +55,15 @@ class _ShopPageState extends State<ShopPage> {
           },
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: items
-                  .map((product) => ProductViewShop(product))
-                  .toList(growable: false),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 400),
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: items
+                    .map((product) => ProductCardShop(product))
+                    .toList(growable: false),
+              ),
             ),
           ),
         );

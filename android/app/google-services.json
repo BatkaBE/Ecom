@@ -1,13 +1,51 @@
 {
   "project_info": {
-    "project_number": "797371290446",
-    "project_id": "shop-app-4a2e2",
-    "storage_bucket": "shop-app-4a2e2.firebasestorage.app"
+    "project_number": "125211484755",
+    "project_id": "fir-flutter-codelab-74cc5",
+    "storage_bucket": "fir-flutter-codelab-74cc5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:797371290446:android:d36971bc16e27158e4041f",
+        "mobilesdk_app_id": "1:125211484755:android:85c01dbf0b0dd63c619ca6",
+        "android_client_info": {
+          "package_name": "com.example.gtk_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA96fKQp3kf69n0vKBycBlnoCQmew22sU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125211484755:android:8fac6dac8c3343cc619ca6",
+        "android_client_info": {
+          "package_name": "com.example.lab_13"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA96fKQp3kf69n0vKBycBlnoCQmew22sU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125211484755:android:95dc6019a595a48a619ca6",
         "android_client_info": {
           "package_name": "com.example.shop"
         }
@@ -15,7 +53,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDVf4U-BKwBQIKgNzJmPM7c3PuDAc8pLPU"
+          "current_key": "AIzaSyA96fKQp3kf69n0vKBycBlnoCQmew22sU8"
         }
       ],
       "services": {
