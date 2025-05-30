@@ -30,12 +30,9 @@ class BasketPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the profile page which will then show FirebaseUI's SignInScreen
-                      // Assumes your ProfilePage or a dedicated login route handles this.
-                      // If using FirebaseUI's ProfileScreen directly for login prompt:
+
                       Navigator.pushNamed(context, '/profile');
-                      // Or, if you have a specific login route that shows SignInScreen:
-                      // Navigator.pushNamed(context, '/login');
+
                     },
                     child: Text(localizedStrings['login'] ?? 'Login'),
                   ),

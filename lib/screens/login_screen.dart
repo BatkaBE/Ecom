@@ -46,7 +46,6 @@ class LoginWrapperScreen extends StatelessWidget {
             context,
             listen: false,
           ).handleUserLogin(user, isNewUser: true, displayName: displayName);
-          // Navigator.pushReplacementNamed(context, '/shop'); // If needed
         }),
       ],
     );

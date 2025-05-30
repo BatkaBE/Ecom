@@ -17,9 +17,12 @@ import '../models/comment_model.dart';
 // Api үйлчилгээ импортлох
 import 'package:shop/services/api_service.dart';
 
+import '../repository/repository.dart';
+
 
 class GlobalProvider extends ChangeNotifier {
 
+  final repo = MyRepository();
   final ApiService apiService = ApiService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final fb_auth.FirebaseAuth _firebaseAuth =
@@ -48,29 +51,25 @@ class GlobalProvider extends ChangeNotifier {
   bool _isLoadingComments = false;
   bool get isLoadingComments => _isLoadingComments;
 
-  // Сэтгэгдэл ачаалж байгаа төлөв
   bool _isLoadingComment = false;
   bool get isLoadingComment => _isLoadingComment;
 
-  // Мэдэгдлийн төлөв (Firebase Cloud Messaging)
   List<RemoteMessage> _receivedNotifications = [];
   List<RemoteMessage> get receivedNotifications =>
       List.unmodifiable(_receivedNotifications);
 
-  // Навигацийн төлөв
   int currentIdx = 0;
 
-  // Локализацийн төлөв
-  Locale _locale = const Locale('en'); // Анхдагч локаль
+
+  Locale _locale = const Locale('en');
   Locale get locale => _locale;
   Map<String, String> localizedStrings = {};
 
-  // --- ЭХЛҮҮЛЭЛТ & АУТЕНТИКАЦИЙН СОНСОГЧ ---
   GlobalProvider() {
-    _listenToAuthStateChanges(); // Firebase Auth сонсогчдыг эхлүүлэх
-    loadProducts(); // JSON файлаас бүтээгдэхүүнүүдийг ачаалах
-    loadLocale(); // Локал тохиргоог ачаалах
-    _initFCM(); // FCM-г эхлүүлэх
+    _listenToAuthStateChanges();
+    loadProducts();
+    loadLocale();
+    _initFCM();
   }
 
   void _listenToAuthStateChanges() {
@@ -85,8 +84,7 @@ class GlobalProvider extends ChangeNotifier {
     });
   }
 
-  // --- FCM ЭХЛҮҮЛЭЛТ & БОЛОВСРУУЛАГЧИД ---
-  /// Firebase Cloud Messaging (FCM)-г эхлүүлэх
+
   Future<void> _initFCM() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -104,12 +102,10 @@ class GlobalProvider extends ChangeNotifier {
     } else {
     }
 
-
     String? token = await _firebaseMessaging.getToken();
     _sendTokenToServer(
       token,
-    ); // Токеныг сервер рүү илгээх функц (хэрэгтэй бол)
-    // Firebase Cloud Messaging арын горимын мессежийн боловсруулагчийг тохируулах
+    );
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Урд талын мэдэгдэл хүлээн авлаа:');
       print('Мессежийн өгөгдөл: ${message.data}');
@@ -117,8 +113,7 @@ class GlobalProvider extends ChangeNotifier {
         print(
           'Мэдэгдэл: ${message.notification?.title} / ${message.notification?.body}',
         );
-        // --- Мэдэгдлийг дэлгэц дээр харуулах ---
-        // GlobalKey ашиглаж болно:
+
         navigatorKey.currentState?.overlay?.context != null
             ? ScaffoldMessenger.of(
                 navigatorKey.currentState!.overlay!.context,
@@ -137,16 +132,13 @@ class GlobalProvider extends ChangeNotifier {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Апп арын горим/хаагдсан төлөвөөс мэдэгдлээр нээгдсэн');
-      print('Мессежийн өгөгдөл: ${message.data}');
+
       if (message.notification != null) {
         print(
           'Мэдэгдэл: ${message.notification?.title} / ${message.notification?.body}',
         );
       }
       _receivedNotifications.add(message);
-      // Энд мэдэгдлийн дагуу тодорхой дэлгэц рүү шилжиж болно.
-      // Жишээ: Navigator.pushNamed(context, '/notification_details', arguments: message.data);
       notifyListeners();
     });
 
@@ -154,42 +146,31 @@ class GlobalProvider extends ChangeNotifier {
     RemoteMessage? initialMessage =
         await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
-      print('Апп мэдэгдлээр хаагдсан төлөвөөс нээгдсэн');
-      print('Мессежийн өгөгдөл: ${initialMessage.data}');
       if (initialMessage.notification != null) {
         print(
           'Мэдэгдэл: ${initialMessage.notification?.title} / ${initialMessage.notification?.body}',
         );
       }
       _receivedNotifications.add(initialMessage);
-      // Хэрэгтэй бол энд тодорхой дэлгэц рүү шилжиж болно.
       notifyListeners();
     }
   }
 
   void _sendTokenToServer(String? token) {
     if (token == null) return;
-    // Хэрэглэгчийн FCM токеныг сервер рүү илгээх эсвэл Firestore-д хадгалах.
-    // Жишээ: Хэрэглэгч нэвтэрсэн үед Firestore-д хадгалах:
     if (_firebaseUser != null) {
       _firestore.collection('users').doc(_firebaseUser!.uid).update({
         'fcmTokens': FieldValue.arrayUnion([
           token,
-        ]), // Хэрэглэгч олон төхөөрөмжтэй байж болно
+        ]),
       });
     }
-    print("FCM токеныг сервер рүү илгээхэд бэлэн: $token");
   }
 
-  // --- БҮТЭЭГДЭХҮҮНИЙ АРГУУД ---
   Future<void> loadProducts() async {
     if (products.isNotEmpty) return;
-
     try {
-      final jsonStr = await rootBundle.loadString('assets/products.json');
-      final List<dynamic> list = json.decode(jsonStr);
-      products = ProductModel.fromList(list);
-      print('Бүтээгдэхүүнүүд ачаалагдсан: ${products.length}');
+      products = await repo.fetchProductData();
       if (_firebaseUser != null && _favorites.isNotEmpty) {
         await _updateProductsFavoriteStatus();
       }
@@ -208,7 +189,7 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- АУТЕНТИКАЦИЙН АРГУУД ---
+
   Future<void> _loadOrCreateUserInFirestore(
       fb_auth.User firebaseUser, {
         bool isNewUser = false,
@@ -219,9 +200,6 @@ class GlobalProvider extends ChangeNotifier {
 
     if (docSnapshot.exists && !isNewUser) {
       currentUser = UserModel.fromFirestore(docSnapshot);
-      print(
-        'Хэрэглэгчийн өгөгдөл Firestore-оос ачаалагдсан: ${currentUser?.email}',
-      );
     } else {
       String? effectiveDisplayName = displayName ?? firebaseUser.displayName;
       String email = firebaseUser.email ?? 'no-email@example.com';
@@ -248,10 +226,6 @@ class GlobalProvider extends ChangeNotifier {
         avatarUrl: firebaseUser.photoURL,
       );
       await userDocRef.set(currentUser!.toFirestore());
-      print(
-        'Шинэ хэрэглэгч Firestore-д үүсгэгдсэн/шинэчлэгдсэн: ${currentUser?.email}',
-      );
-      // Хэрэв шинэ хэрэглэгч бол FCM токеныг шууд хадгална
       String? token = await _firebaseMessaging.getToken();
       _sendTokenToServer(token);
     }
@@ -272,13 +246,9 @@ class GlobalProvider extends ChangeNotifier {
     if (currentUser != null) {
       await _loadUserCartFromFirestore();
       await _loadUserFavoritesFromFirestore();
-      // Хэрэглэгч нэвтэрсэн үед FCM токеныг шалгаж/шинэчилнэ
       String? token = await _firebaseMessaging.getToken();
       _sendTokenToServer(token);
     } else {
-      print(
-        "Алдаа: currentUser (UserModel) нь нэвтрэх оролдлогын дараа null байна.",
-      );
       _cartItems.clear();
       _favorites.clear();
       await _updateProductsFavoriteStatus();
@@ -292,7 +262,7 @@ class GlobalProvider extends ChangeNotifier {
     _cartItems.clear();
     _favorites.clear();
     _productComments.clear();
-    _receivedNotifications.clear(); // Гарах үед хүлээн авсан мэдэгдлүүдийг цэвэрлэх
+    _receivedNotifications.clear();
 
     for (var prod in products) {
       prod.isFavorite = false;
@@ -319,16 +289,13 @@ class GlobalProvider extends ChangeNotifier {
             final data = doc.data();
             return ProductModel.fromJson({...data, 'id': data['id'] ?? doc.id});
           }).toList();
-      print('Сагс Firestore-оос ачаалагдсан: ${_cartItems.length}');
     } catch (e) {
-      print('Сагсыг Firestore-оос ачаалахад алдаа гарлаа: $e');
       _cartItems.clear();
     }
   }
 
   Future<void> addToCart(ProductModel item) async {
     if (_firebaseUser == null) {
-      print("Хэрэглэгч нэвтрээгүй байна. Сагсанд нэмэх боломжгүй.");
       return;
     }
     if (item.id == null) {
@@ -508,9 +475,6 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
 
     if (productId.isEmpty) {
-      print(
-        'Бүтээгдэхүүний ID хоосон байна. Сэтгэгдлүүд цэвэрлэгдсэн хэвээр байна.',
-      );
       _isLoadingComments = false;
       notifyListeners();
       return;
@@ -529,11 +493,8 @@ class GlobalProvider extends ChangeNotifier {
           commentsSnapshot.docs
               .map((doc) => CommentModel.fromFirestore(doc))
               .toList();
-      print(
-        '$productId бүтээгдэхүүнд ${_productComments.length} сэтгэгдэл ачаалагдсан.',
-      );
+
     } catch (e) {
-      print('Сэтгэгдлүүдийг $productId бүтээгдэхүүнд ачаалахад алдаа гарлаа: $e');
       _productComments = [];
     }
     _isLoadingComments = false;
@@ -542,13 +503,11 @@ class GlobalProvider extends ChangeNotifier {
 
   Future<bool> addProductComment(String productId, String content) async {
     if (_firebaseUser == null) {
-      print('Хэрэглэгч нэвтрээгүй байна. Сэтгэгдэл нэмэх боломжгүй.');
       return false;
     }
     _isLoadingComment = true;
     notifyListeners();
     if (productId.isEmpty || content.trim().isEmpty) {
-      print('Бүтээгдэхүүний ID эсвэл сэтгэгдлийн агуулга хоосон байна.');
       _isLoadingComment = false;
       notifyListeners();
       return false;
@@ -574,7 +533,6 @@ class GlobalProvider extends ChangeNotifier {
       content: content.trim(),
       timestamp: Timestamp.now(),
     );
-
     try {
       final commentDocRef = await _firestore
           .collection('products')
@@ -592,15 +550,10 @@ class GlobalProvider extends ChangeNotifier {
         timestamp: newCommentData.timestamp,
       );
       _productComments.insert(0, addedComment);
-
-      print(
-        'Сэтгэгдэл ID ${commentDocRef.id} амжилттай $productId бүтээгдэхүүнд нэмэгдсэн.',
-      );
       _isLoadingComment = false;
       notifyListeners();
       return true;
     } catch (e) {
-      print('Сэтгэгдлийг $productId бүтээгдэхүүнд нэмэхэд алдаа гарлаа: $e');
       _isLoadingComment = false;
       notifyListeners();
       return false;
