@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../provider/globalprovider.dart';
 import '../models/product_model.dart';
 
-class BagsPage extends StatelessWidget {
-  const BagsPage({super.key});
+class BasketPage extends StatelessWidget {
+  const BasketPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,6 @@ class BagsPage extends StatelessWidget {
         final items = provider.cartItems;
         final localizedStrings = provider.localizedStrings;
 
-        // Handle case where user is not logged in
         if (provider.currentUser == null) {
           return Scaffold(
             appBar: AppBar(title: Text(localizedStrings['cart'] ?? 'Cart')),

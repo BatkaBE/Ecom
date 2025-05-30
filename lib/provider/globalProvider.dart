@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:firebase_core/firebase_core.dart'; // Firebase үндсэн сан
 import 'package:firebase_auth/firebase_auth.dart'
     as fb_auth; // Нэр давхцахаас сэргийлж alias ашигласан
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,17 +18,6 @@ import '../models/comment_model.dart';
 // Api үйлчилгээ импортлох
 import 'package:shop/services/api_service.dart';
 
-// Арын горимын мессежийн боловсруулагч (top-level function)
-// Энэ функц нь апп-н контекстээс гадуур ажиллах ёстой.
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Арын горимд мессеж боловсруулж байна: ${message.messageId}");
-  print('Мессежийн өгөгдөл: ${message.data}');
-  print(
-    'Мэдэгдэл: ${message.notification?.title} / ${message.notification?.body}',
-  );
-  // Хүлээн авсан мэдэгдлийг боловсруулах логикийг энд нэмнэ үү.
-}
 
 class GlobalProvider extends ChangeNotifier {
   // Үйлчилгээнүүд
@@ -168,7 +156,6 @@ class GlobalProvider extends ChangeNotifier {
       notifyListeners();
     });
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     RemoteMessage? initialMessage =
         await _firebaseMessaging.getInitialMessage();

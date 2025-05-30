@@ -46,6 +46,8 @@ dependencies:
   cloud_firestore: ^4.15.8 # Use latest version
   firebase_ui_localizations: ^1.7.0 # Та өөрийн Firebase UI багцын хувилбарт тохируулаарай
   firebase_messaging: ^14.9.4 # Энэ санг нэмнэ
+  flutter_local_notifications: ^19.2.1
+
 
 dev_dependencies:
   flutter_test:

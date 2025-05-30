@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: IndexedStack(
         index: idx,
-        children: const [ShopPage(), BagsPage(), FavoritePage(), ProfilePage()],
+        children: const [ShopPage(), BasketPage(), FavoritePage(), ProfilePage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
