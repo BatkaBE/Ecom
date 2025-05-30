@@ -1,11 +1,9 @@
 // lib/provider/global_provider.dart
 import 'dart:convert';
-import 'dart:io' show Platform; // Platform-ийг шалгахад ашиглана
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:firebase_core/firebase_core.dart'; // Firebase Core-ийг нэмэх
 import 'package:firebase_auth/firebase_auth.dart'
     as fb_auth; // Aliased to avoid conflict
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/globalprovider.dart';
-import '../models/product_model.dart'; // Ensure this path is correct
-
 class BagsPage extends StatelessWidget {
   const BagsPage({super.key});
 

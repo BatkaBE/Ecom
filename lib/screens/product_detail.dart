@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/product_model.dart';
-import '../models/comment_model.dart'; // This import is actively used
 import '../provider/globalprovider.dart';
 
 class ProductDetail extends StatefulWidget {
