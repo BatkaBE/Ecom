@@ -1,0 +1,13 @@
+{
+  "cart": "Сагс",
+  "cart_empty": "Таны сагс хоосон байна",
+  "total": "Нийт дүн:",
+  "buy_all": "Бүгдийг худалдаж авах",
+  "unknown_product": "Үл мэдэгдэх бараа",
+  "decrease_quantity": "Тоо ширхгийг хасах",
+  "increase_quantity": "Тоо ширхгийг нэмэх",
+  "remove_from_cart": "Сагснаас устгах",
+  "login_to_view_cart": "Сагсаа харахын тулд нэвтэрнэ үү.",
+  "login": "Нэвтрэх",
+  "checkout_not_implemented": "Төлбөр төлөх хэсэг хийгдээгүй байна."
+}

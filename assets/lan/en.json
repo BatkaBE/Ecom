@@ -1,0 +1,14 @@
+
+{
+  "cart": "Cart",
+  "cart_empty": "Your cart is empty",
+  "total": "Total:",
+  "buy_all": "Buy All",
+  "unknown_product": "Unknown Product",
+  "decrease_quantity": "Decrease quantity",
+  "increase_quantity": "Increase quantity",
+  "remove_from_cart": "Remove from cart",
+  "login_to_view_cart": "Please log in to view your cart.",
+  "login": "Login",
+  "checkout_not_implemented": "Checkout feature is not yet implemented."
+}
