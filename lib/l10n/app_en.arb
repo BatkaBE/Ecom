@@ -1,0 +1,24 @@
+{
+  "shop": "Products",
+  "basket": "Cart",
+  "basketState": "Cart is empty",
+  "favorites": "Favorites",
+  "profile": "Profile",
+  "myProfile": "My Profile",
+  "myOrders": "My Orders",
+  "shippingAddresses": "Shipping Addresses",
+  "paymentMethods": "Payment Methods",
+  "promotionCodes": "Promotion Codes",
+  "myReviews": "My Reviews",
+  "settings": "Settings",
+  "priceLabel": "Price: {price}",
+  "categoryLabel": "Category: {category}",
+  "ratingLabel": "Rating: {rating} ({count})",
+  
+   "total": "Total",
+   "paymentSuccess": "Payment is successfull",
+   "buy": "Buy"
+
+
+
+}

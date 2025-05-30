@@ -1,0 +1,23 @@
+{
+  "shop": "Бараанууд",
+  "basket": "Сагс",
+  "basketState": "Сагс хоосон байна",
+  "favorites": "Хадгалсан",
+  "profile": "Профайл",
+  "myProfile": "Миний Профайл",
+  "myOrders": "Миний Захиалгууд",
+  "shippingAddresses": "Хүргэлтийн Хаягууд",
+  "paymentMethods": "Төлбөрийн Хэрэгслүүд",
+  "promotionCodes": "Урамшууллын Кодууд",
+  "myReviews": "Миний Сэтгэгдэл",
+  "settings": "Тохиргоо",
+
+  "priceLabel": "Үнэ: {price}",
+  "categoryLabel": "Ангилал: {category}",
+  "ratingLabel": "Үнэлгээ: {rating} ({count})",
+  "total": "Нийт",
+  "paymentSuccess": "Төлбөр амжилттай төлөгдлөө",
+  "buy": "Худалдаж авах"
+
+
+}
