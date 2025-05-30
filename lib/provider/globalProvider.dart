@@ -1,4 +1,3 @@
-// lib/provider/global_provider.dart
 import 'dart:convert';
 import 'dart:io' show Platform; // Платформыг шалгахад ашиглана
 import 'package:flutter/material.dart';
@@ -20,17 +19,17 @@ import 'package:shop/services/api_service.dart';
 
 
 class GlobalProvider extends ChangeNotifier {
-  // Үйлчилгээнүүд
-  final ApiService apiService = ApiService(); // Бусад API дуудлагад ашиглагдвал
+
+  final ApiService apiService = ApiService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final fb_auth.FirebaseAuth _firebaseAuth =
-      fb_auth.FirebaseAuth.instance; // FirebaseAuth-ийн instance
+      fb_auth.FirebaseAuth.instance;
   final FirebaseMessaging _firebaseMessaging =
-      FirebaseMessaging.instance; // FCM-ийн instance
+      FirebaseMessaging.instance;
 
   // Хэрэглэгчийн төлөв
-  fb_auth.User? _firebaseUser; // Одоогийн Firebase-аар нэвтэрсэн хэрэглэгч
-  UserModel? currentUser; // Таны өөрийн UserModel
+  fb_auth.User? _firebaseUser;
+  UserModel? currentUser;
 
   // Бүтээгдэхүүний төлөв
   List<ProductModel> products = [];
@@ -100,18 +99,13 @@ class GlobalProvider extends ChangeNotifier {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Хэрэглэгч мэдэгдлийн зөвшөөрөл өгсөн.');
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print('Хэрэглэгч түр зөвшөөрөл өгсөн.');
     } else {
-      print('Хэрэглэгч зөвшөөрөл өгөөгүй эсвэл татгалзсан.');
     }
 
-    // FCM токен авах
-    // Энэ токеныг сервер рүү илгээж, энэ төхөөрөмж рүү чиглэсэн мэдэгдэл илгээх боломжтой.
+
     String? token = await _firebaseMessaging.getToken();
-    print("FirebaseMessaging Token: $token");
     _sendTokenToServer(
       token,
     ); // Токеныг сервер рүү илгээх функц (хэрэгтэй бол)
@@ -307,7 +301,6 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- САГСНЫ АРГУУД (Firestore дээр суурилсан) ---
   Future<void> _loadUserCartFromFirestore() async {
     if (_firebaseUser == null) {
       _cartItems.clear();
@@ -509,7 +502,6 @@ class GlobalProvider extends ChangeNotifier {
     return _favorites.any((p) => p.id.toString() == item.id.toString());
   }
 
-  // --- СЭТГЭГДЛИЙН АРГУУД (Firestore дээр суурилсан) ---
   Future<void> fetchProductComments(String productId) async {
     _isLoadingComments = true;
     _productComments.clear();

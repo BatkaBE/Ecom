@@ -261,8 +261,8 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
           );
         },
-        icon: const Icon(Icons.add_shopping_cart_outlined),
-        label: Text(localizedStrings['add_to_cart_button'] ?? 'Add to Cart'),
+        icon: const Icon(Icons.shopping_bag),
+        label: Text(localizedStrings['add_to_cart_button'] ?? 'Add to Basket'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         elevation: 4,
